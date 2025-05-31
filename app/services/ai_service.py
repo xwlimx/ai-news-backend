@@ -90,14 +90,13 @@ class AIService:
         """Extract nationalities and countries mentioned in the article"""
         
         prompt = f"""
-        Analyze the following news article and extract all nationalities, countries, and peoples mentioned.
+        Analyze the following news article and extract the following entities with a focus on geopolitical and named entity recognition
         
-        Instructions:
-        - Look for country names (e.g., "United States", "France", "Japan")
-        - Look for nationality adjectives (e.g., "American", "French", "Japanese") 
-        - Look for demonyms/peoples (e.g., "Americans", "French people", "Japanese")
-        - Include both direct mentions and implied references
-        - Return ONLY a JSON array of unique strings
+        - Countries mentioned explicitly or implicitly in the article
+        - Nationality adjectives, peoples, or demonyms referenced (e.g., 'French', 'Syrian', 'Kurds')
+        - People mentioned by name (e.g., political leaders, public figures, spokespersons)
+        - Organizations involved or referenced (e.g., United Nations, Red Cross, Ministère de l’Intérieur)
+        - The input article may be written in English, French, or a combination of both. Your extraction must support multilingual content and apply language-aware parsing and named entity recognition to accurately identify relevant countries, nationalities, people, and organizations.
         - Use standardized country/nationality names
         - If no nationalities are found, return an empty array
         
@@ -113,7 +112,7 @@ class AIService:
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an expert at identifying nationalities and countries in text. Return only valid JSON arrays."
+                        "content": "You are an expert information extractor for international news articles. Your job is to analyze a news article (in English, French, or both), and extract geopolitical and entity data. Return only valid JSON arrays."
                     },
                     {
                         "role": "user",
