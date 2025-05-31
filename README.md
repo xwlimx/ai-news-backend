@@ -33,27 +33,21 @@ ai-news-backend/
 
 1. **Navigate to backend directory:**
    ```bash
-   cd backend
+   cd ai-news-backend
    ```
 
-2. **Create virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies:**
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Environment configuration:**
+3. **Environment configuration:**
    ```bash
    cp .env.example .env
    # Edit .env with your OpenAI API key
    ```
 
-5. **Run development server:**
+4. **Run development server:**
    ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
@@ -73,7 +67,7 @@ ai-news-backend/
 
 2. **Create a Procfile:**
    ```bash
-   web: uvicorn application:app --host=0.0.0.0 --port=8080
+   web: uvicorn app.main:app --host=0.0.0.0 --port=8000
    ```
 
 3. **Zip Your Application Files:**
@@ -106,7 +100,12 @@ Analyzes a news article and returns summary and nationalities.
 ```json
 {
   "summary": "Brief summary of the article...",
-  "nationalities": ["American", "Chinese", "European", ...]
+  "geopolitical_entities": {
+		"countries": ["United States", "China"],
+		"nationalities": ["American", "Chinese"],
+		"people": ["Joe Biden", "Xi Jinping"],
+		"organizations": ["U.S. Trade Representative", "Ministry of Commerce"]
+	}
 }
 ```
 
