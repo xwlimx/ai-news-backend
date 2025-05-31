@@ -2,7 +2,7 @@
 Pydantic models for request/response validation
 """
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 
 class AnalysisRequest(BaseModel):
@@ -19,13 +19,21 @@ class AnalysisRequest(BaseModel):
 class AnalysisResponse(BaseModel):
     """Response model for article analysis"""
     summary: str = Field(..., description="AI-generated summary of the article")
-    nationalities: List[str] = Field(..., description="List of nationalities/countries mentioned")
+    geopolitical_entities: dict[str, list[str]] = Field(
+        ..., 
+        description="Categorized geopolitical entities including countries, nationalities, people, and organizations"
+    )
     
     class Config:
         json_schema_extra = {
             "example": {
                 "summary": "The United States and China have finalized a comprehensive trade agreement that will reduce tariffs and increase bilateral trade volume.",
-                "nationalities": ["American", "Chinese"]
+                "geopolitical_entities": {
+                    "countries": ["United States", "China"],
+                    "nationalities": ["American", "Chinese"],
+                    "people": ["Joe Biden", "Xi Jinping"],
+                    "organizations": ["U.S. Trade Representative", "Ministry of Commerce"]
+                }
             }
         }
 

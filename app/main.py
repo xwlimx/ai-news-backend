@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(
     title="AI News Analyzer",
-    description="Analyze news articles with AI to generate summaries and extract nationalities",
+    description="Analyze news articles with AI to generate summaries and extract geopolitical entities",
     version="1.0.0"
 )
 
@@ -47,14 +47,14 @@ async def analyze_article(
     text: Optional[str] = Form(None)
 ):
     """
-    Analyze a news article and return summary and nationalities
+    Analyze a news article and return summary and geopolitical entities
     
     Args:
         file: Optional uploaded file (.txt or .docx)
         text: Optional text content
     
     Returns:
-        AnalysisResponse with summary and nationalities
+        AnalysisResponse with summary and geopolitical entities
     """
     try:
         if not file and not text:
@@ -86,13 +86,11 @@ async def analyze_article(
             )
         
         logger.info("Starting AI analysis")
-        summary, nationalities = await ai_service.analyze_article(article_text)
-        
-        logger.info(f"Analysis complete - Summary length: {len(summary)}, Nationalities found: {len(nationalities)}")
+        summary, geopolitical_entities = await ai_service.analyze_article(article_text)
         
         return AnalysisResponse(
             summary=summary,
-            nationalities=nationalities
+            geopolitical_entities=geopolitical_entities
         )
         
     except HTTPException:
