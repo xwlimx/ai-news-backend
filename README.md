@@ -129,3 +129,39 @@ CORS_ORIGINS=http://localhost:3000,https://main.dlimtlzxpr8ax.amplifyapp.com/
 - Implement rate limiting for the API
 - Add authentication
 - Implement caching for repeated analyses
+
+## 🔒 Fixing Mixed Content Issues with CloudFront
+
+If you encounter the following error in your browser console:
+
+> **Mixed Content**: The page was loaded over HTTPS, but requested an insecure XMLHttpRequest endpoint. This request has been blocked; the content must be served over HTTPS.
+
+You can resolve this by setting up an Amazon CloudFront distribution that enforces HTTPS and configures proper CORS headers.
+
+### ✅ Steps to Configure CloudFront
+
+1. **Go to the CloudFront Console**
+2. **Create a CloudFront Distribution**
+   - **Origin Domain**: Set to a **valid DNS domain name**
+   - **Viewer Protocol Policy**: `Redirect HTTP to HTTPS`
+   - **Allowed HTTP Methods**: `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE`
+   - **Cache Policy**: `CachingOptimized`
+3. **Create a Response Headers Policy**
+   - Click **Create response headers policy**
+   - **Name**: `CORS-Allow-Amplify-App`
+   - Check **Configure CORS**
+     - **Access-Control-Allow-Origin**:
+       - Check **Override origin**
+       - **Origins**: Add your **valid DNS domain name**
+     - **Access-Control-Allow-Headers**:
+       - Add each of the following headers individually:
+         - `Content-Type`
+         - `Authorization`
+         - `X-Requested-With`
+         - `Accept`
+     - **Access-Control-Max-Age**: `86400` (24 hours)
+   - Click **Create**
+4. **Set Response Headers Policy**: Select `CORS-Allow-Amplify-App`
+5. Click **Create distribution**
+
+This setup ensures that all content is served securely over HTTPS and that cross-origin requests work properly with your front-end app (e.g. AWS Amplify).
